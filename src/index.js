@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const { createAgent } = require('@microsoft/agents-hosting');
 const { createExpressHosting } = require('@microsoft/agents-hosting-express');
-const { createTeamsExtension, getConversationReference } = require('@microsoft/agents-hosting-extensions-teams');
+const teamsExtension = require('@microsoft/agents-hosting-extensions-teams');
 const fetch = require('node-fetch');
 
 const app = express();
@@ -12,7 +12,7 @@ const conversationStore = new Map();
 
 const agent = createAgent({
   id: 'teams-agent',
-  extensions: [createTeamsExtension()],
+  extensions: [teamsExtension.createTeamsExtension()],
   onMessageReceived: async (context) => {
     const reference = getConversationReference(context.activity);
     const userId = reference.user.id;
