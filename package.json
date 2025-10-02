@@ -1,16 +1,33 @@
 {
   "name": "teams-agent-bot",
   "version": "1.0.0",
-  "main": "src/index.js",
-  "scripts": {
-    "start": "node src/index.js"
-  },
-  "dependencies": {
-    "@microsoft/agents-hosting": "^0.3.0",
-    "@microsoft/agents-hosting-express": "^0.3.0",
-    "@microsoft/agents-hosting-extensions-teams": "^0.3.0",
-    "express": "^4.18.2",
-    "dotenv": "^16.3.1",
-    "node-fetch": "^2.6.7"
-  }
+  "main": "index.js",
+    "scripts": {
+        "start": "node ./index.js",
+        "watch": "nodemon ./index.js",
+        "lint": "eslint .",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Microsoft/BotBuilder-Samples.git"
+    },
+    "dependencies": {
+        "botbuilder": "~4.23.0",
+        "botbuilder-dialogs": "~4.23.0",
+        "dotenv": "^8.2.0",
+        "fetch-ponyfill": "^7.0.0",
+        "moment": "^2.29.1",
+        "path": "^0.12.7",
+        "restify": "~10.0.0"
+    },
+    "devDependencies": {
+        "eslint": "^7.0.0",
+        "eslint-config-standard": "^14.1.1",
+        "eslint-plugin-import": "^2.20.2",
+        "eslint-plugin-node": "^11.1.0",
+        "eslint-plugin-promise": "^4.2.1",
+        "eslint-plugin-standard": "^4.0.1",
+        "nodemon": "~2.0.4"
+    }
 }
