@@ -1,0 +1,16 @@
+{
+  "name": "teams-agent-bot",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "@microsoft/agents-hosting": "^0.3.0",
+    "@microsoft/agents-hosting-express": "^0.3.0",
+    "@microsoft/agents-hosting-extensions-teams": "^0.3.0",
+    "express": "^4.18.2",
+    "dotenv": "^16.3.1",
+    "node-fetch": "^2.6.7"
+  }
+}
