@@ -106,3 +106,36 @@ To learn more about deploying a bot to Azure, see [Deploy your bot to Azure](htt
 - [Channels and Bot Connector Service](https://docs.microsoft.com/en-us/azure/bot-service/bot-concepts?view=azure-bot-service-4.0)
 - [Restify](https://www.npmjs.com/package/restify)
 - [dotenv](https://www.npmjs.com/package/dotenv)
+
+
+
+
+
+cds
+
+entity BotUserConversations {
+  key email             : String(256);       // user Email，key
+      aadObjectId       : String(128);       // Azure AD Object ID
+      conversationId    : String(128);       // 会話 ID
+      serviceUrl        : String(512);       // Bot サービスURL
+      channelId         : String(64);        // Teams Channel ID
+      botId             : String(128);       // Bot ID
+      userId            : String(128);       // Teams User ID
+      conversationRef   : LargeString;       // conversationReference JSON
+      createdAt         : Timestamp;         // 作成時間
+      updatedAt         : Timestamp;         // 更新時間
+}
+
+
+cf create-user-provided-service ups-hdi-external \
+  -t "hana" \
+  -p '{
+    "host": "<hana-host>",
+    "port": "443",
+    "user": "<db-user>",
+    "password": "<db-password>",
+    "schema": "<target-schema>",
+    "sslValidateCertificate": true
+  }'
+
+

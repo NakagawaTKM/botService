@@ -84,3 +84,36 @@ server.get('/api/notify', async (req, res) => {
     res.write('<html><body><h1>Proactive messages have been sent.</h1></body></html>');
     res.end();
 });
+
+// Listen for incoming sendMessageToUser and send proactive messages to special user.
+server.post('/api/sendMessageToUser', async (req, res) => {
+    const { email, message } = req.body;
+    console.log(email);
+    console.log(message);
+    res.status(200).send(`Message "${message}" sent to ${email}`);
+//     if (!email || !message) {
+//         res.status(400).send('Please provide both email and message in the request body');
+//         return;
+//     }
+//     const conversationReference = conversationReferences[email];
+
+//    conversationReference) {
+//         res.status(404).send(`No conversation found for email: ${email}`);
+//         return;
+//     }
+
+//     try {
+//         await adapter.continueConversationAsync(
+//             process.env.MicrosoftAppId ?? '',
+//             conversationReference,
+//             async context => {
+//                 await context.sendActivity(message);
+//             }
+//         );
+
+//         res.status(200).send(`Message sent to ${email}`);
+//     } catch (error) {
+//         console.error('Error sending message:', error);
+//         res.status(500).send('Failed to send message');
+//     }
+});
