@@ -127,15 +127,13 @@ entity BotUserConversations {
 }
 
 
-cf create-user-provided-service ups-hdi-external \
-  -t "hana" \
-  -p '{
-    "host": "<hana-host>",
-    "port": "443",
-    "user": "<db-user>",
-    "password": "<db-password>",
-    "schema": "<target-schema>",
-    "sslValidateCertificate": true
-  }'
+
+
+
+npm i @sap/hana-client
+
+cf bind-service teams-agent-bot bpwf-db
+cf service bpwf-db
+
 
 

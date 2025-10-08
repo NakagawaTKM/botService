@@ -43,6 +43,8 @@ class ProactiveBot extends ActivityHandler {
     addConversationReference(activity) {
         const conversationReference = TurnContext.getConversationReference(activity);
         const conversationId = conversationReference.conversation?.id;
+        console.log("conversationReference is :")
+        console.log(conversationReference);
         if (conversationId) {
             this.conversationReferences[conversationId] = conversationReference;
         }
