@@ -2,6 +2,8 @@
 applications:
 - name: teams-agent-bot
   memory: 256M
+  routes:
+    - route: teams-agent-bot-v01.cfapps.us10-001.hana.ondemand.com
   instances: 1
   path: .
   buildpacks:

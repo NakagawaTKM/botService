@@ -8,11 +8,12 @@ const { ActivityHandler, TurnContext } = require('botbuilder');
 class ProactiveBot extends ActivityHandler {
     constructor(conversationReferences) {
         super();
-
+        console.log("Called function");
         // Dependency injected dictionary for storing ConversationReference objects used in NotifyController to proactively message users
         this.conversationReferences = conversationReferences;
 
         this.onConversationUpdate(async (context, next) => {
+            console.log("context" + context);
             this.addConversationReference(context.activity);
 
             await next();
