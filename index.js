@@ -23,6 +23,7 @@ const {
 
 // This bot's main dialog.
 const { ProactiveBot } = require('./bots/proactiveBot');
+const { selectByEmail } = require('./bots/hanaService'); // DBから会話情報を取得する関数
 
 const botFrameworkAuthentication = new ConfigurationBotFrameworkAuthentication(process.env);
 
@@ -90,30 +91,41 @@ server.post('/api/sendMessageToUser', async (req, res) => {
     const { email, message } = req.body;
     console.log(email);
     console.log(message);
-    res.status(200).send(`Message "${message}" sent to ${email}`);
-//     if (!email || !message) {
-//         res.status(400).send('Please provide both email and message in the request body');
-//         return;
-//     }
-//     const conversationReference = conversationReferences[email];
+    
+    if (!email) {
+        res.setHeader('Content-Type', 'text/html');
+        res.writeHead(400);
+        res.write('<html><body><h1>email is required.</h1></body></html>');
+        res.end();
+    }
 
-//    conversationReference) {
-//         res.status(404).send(`No conversation found for email: ${email}`);
-//         return;
-//     }
+    try {
+            const record = await selectByEmail(email);
+            if (!record) {
+                res.setHeader('Content-Type', 'text/html');
+                res.writeHead(400);
+                res.write('<html><body><h1>No conversation found for email yet.</h1></body></html>');
+                res.end();
+            }
 
-//     try {
-//         await adapter.continueConversationAsync(
-//             process.env.MicrosoftAppId ?? '',
-//             conversationReference,
-//             async context => {
-//                 await context.sendActivity(message);
-//             }
-//         );
+            const conversationReference = JSON.parse(record.CONVERSATIONREF);
 
-//         res.status(200).send(`Message sent to ${email}`);
-//     } catch (error) {
-//         console.error('Error sending message:', error);
-//         res.status(500).send('Failed to send message');
-//     }
+            await adapter.continueConversationAsync(
+                process.env.MicrosoftAppId ?? '',
+                conversationReference,
+                async (context) => {
+                    await context.sendActivity(message);
+                }
+            );
+            res.setHeader('Content-Type', 'text/html');
+            res.writeHead(200);
+            res.write('<html><body><h1>Message sent email.</h1></body></html>');
+            res.end();
+        } catch (error) {
+            console.error('Error sending message:', error);
+            res.setHeader('Content-Type', 'text/html');
+            res.writeHead(500);
+            res.write('<html><body><h1>Failed to send message.</h1></body></html>');
+            res.end();
+        }
 });

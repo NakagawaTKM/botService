@@ -1,47 +1,3 @@
-需要在项目里添加一个内部的服务程序。
-查询是不是第一次对话，如果是第一次对话，就插入一条记录，如果不是第一次对话，就什么也不做。
-用userId来查询，如果没有记录就插入一条记录。
-插入的数据，用当前的对话的信息。
-Email的值，用Graph API来查询。
-查询Email的代码也帮我写出来。
-
-数据库的项目如下
-entity BotUserConversations {
-  key email             : String(256);       // user Email，key
-      aadObjectId       : String(128);       // Azure AD Object ID
-      conversationId    : String(128);       // 会話 ID
-      serviceUrl        : String(512);       // Bot サービスURL
-      channelId         : String(64);        // Teams Channel ID
-      botId             : String(128);       // Bot ID
-      userId            : String(128);       // Teams User ID
-      conversationRef   : LargeString;       // conversationReference JSON
-      createdAt         : Timestamp;         // 作成時間
-      updatedAt         : Timestamp;         // 更新時間
-}
-现在需要把ConversationReference存到数据库中，以下是一个连接SAP HANA数据库并执行查询的示例代码：
-
-
-const hana = require('@sap/hana-client');
-const vcapServices = JSON.parse(process.env.VCAP_SERVICES);
-const hanaConfig = vcapServices['hana'][0].credentials;
-
-const conn = hana.createConnection();
-conn.connect(hanaConfig, (err) => {
-  if (err) {
-    return console.error('Connection error:', err);
-  }
-
-  conn.exec('SELECT * FROM "MY_SCHEMA"."BOTUSERCONVERSATIONS"', (err, rows) => {
-    if (err) {
-      return console.error('Query error:', err);
-    }
-    console.log('Rows:', rows);
-    conn.disconnect();
-  });
-});
-
-
-
 
 
 查询 Email 的 Graph API 代码（Node.js）
@@ -181,3 +137,4 @@ main();
 
 
 
+channelId

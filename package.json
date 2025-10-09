@@ -14,9 +14,10 @@
   },
   "dependencies": {
     "@sap/hana-client": "^2.26.18",
+    "axios": "^1.12.2",
     "botbuilder": "~4.23.0",
     "botbuilder-dialogs": "~4.23.0",
-    "dotenv": "^8.2.0",
+    "dotenv": "^8.6.0",
     "fetch-ponyfill": "^7.0.0",
     "moment": "^2.29.1",
     "path": "^0.12.7",
