@@ -35,7 +35,9 @@ class ProactiveBot extends ActivityHandler {
             this.addConversationReference(context.activity);
 
             // Echo back what the user said
-            await context.sendActivity(`You sent '${ context.activity.text }'`);
+            await context.sendActivity(`I am just a message-sending bot and cannot answer your question. 
+                If you need assistance, please contact the XX department. Thank you. 
+                You sent '${ context.activity.text }'`);
             await next();
         });
     }
