@@ -11,6 +11,7 @@ const path = require('path');
 // Note: Ensure you have a .env file and include the MicrosoftAppId and MicrosoftAppPassword.
 const ENV_FILE = path.join(__dirname, '.env');
 require('dotenv').config({ path: ENV_FILE });
+const jwt = require('jsonwebtoken');
 
 const restify = require('restify');
 
@@ -87,7 +88,7 @@ server.get('/api/notify', async (req, res) => {
 });
 
 // Listen for incoming sendMessageToUser and send proactive messages to special user.
-server.post('/api/sendMessageToUser', async (req, res) => {
+server.post('/api/sendMessageToUser', authenticateJWT, async (req, res) => {
     const { email, message } = req.body;
     console.log(email);
     console.log(message);
@@ -129,3 +130,21 @@ server.post('/api/sendMessageToUser', async (req, res) => {
             res.end();
         }
 });
+
+
+function authenticateJWT(req, res, next) {
+    const authHeader = req.headers.authorization;
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+        const token = authHeader.split(' ')[1];
+        jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+            if (err) {
+                res.send(403, { message: 'Forbidden: Invalid token.' });
+            } else {
+                req.user = user;
+                next();
+            }
+        });
+    } else {
+        res.send(401, { message: 'Unauthorized: No token provided.' });
+    }
+}
