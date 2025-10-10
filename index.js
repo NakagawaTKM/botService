@@ -32,6 +32,19 @@ const botFrameworkAuthentication = new ConfigurationBotFrameworkAuthentication(p
 // See https://aka.ms/about-bot-adapter to learn more about adapters.
 const adapter = new CloudAdapter(botFrameworkAuthentication);
 
+const secret = process.env.JWT_SECRET || '32charsecret32charsecret!';
+
+const users = [
+  { username: 'alice' },
+  { username: 'bob' },
+  { username: 'carol' }
+];
+
+users.forEach(user => {
+  const token = jwt.sign(user, secret, { expiresIn: '1y' });
+  console.log(`${user.username}: ${token}`);
+});
+
 // Catch-all for errors.
 adapter.onTurnError = async (context, error) => {
     // This check writes out errors to console log .vs. app insights.
@@ -140,6 +153,10 @@ function authenticateJWT(req, res, next) {
             if (err) {
                 res.send(403, { message: 'Forbidden: Invalid token.' });
             } else {
+                const allowedUsers = ['alice', 'bob', 'carol'];
+                if (!allowedUsers.includes(user.username)) {
+                    return res.send(403, { message: 'Forbidden: User not allowed.' });
+                }
                 req.user = user;
                 next();
             }
